@@ -65,38 +65,39 @@ namespace BookStore.Controllers
             {
                 _db.categories.Update(cat);
                 _db.SaveChanges();
-                TempData["success"] = "Category Edited Successfully";
+                TempData["Edited"] = "Category Edited Successfully";
                 return RedirectToAction("Index");
             }
             return View(cat);
         }
+
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            if(id == null)
             {
                 return NotFound();
             }
-            var catgoryfromdb = _db.categories.Find(id);
-            if (catgoryfromdb == null)
-            {
-                return NotFound();
-            }
-            return View(catgoryfromdb);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
-        {
-            var obj = _db.categories.Find(id);
+            Category obj  = _db.categories.Find(id);
             if(obj == null)
             {
-                return NotFound();
+                return BadRequest();
             }
+
+            return View(obj);
+        }
+        [HttpPost,ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int id)
+        {
+            Category obj = _db.categories.Find(id);
+            
             _db.categories.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Category Delete Successfully";
+            TempData["delete"] = "Category Deleted Successfully";
             return RedirectToAction("Index");
+
         }
+        
 
     }
 }

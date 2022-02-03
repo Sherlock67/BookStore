@@ -2,6 +2,7 @@
 using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Controllers
 {
@@ -63,7 +64,8 @@ namespace BookStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.categories.Update(cat);
+                _db.Entry(cat).State = EntityState.Modified;
+                //_db.categories.Update(cat);
                 _db.SaveChanges();
                 TempData["Edited"] = "Category Edited Successfully";
                 return RedirectToAction("Index");

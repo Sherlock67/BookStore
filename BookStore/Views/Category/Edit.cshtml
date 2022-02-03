@@ -2,6 +2,7 @@
 
 <form method="post" asp-action="Edit">
     <div class="border p-3 mt-4">
+         @Html.HiddenFor(model => model.categoryid)
         <div class="row pb-2">
             <h2 class="text-primary">Edit Category</h2>
 

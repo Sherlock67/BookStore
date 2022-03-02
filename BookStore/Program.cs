@@ -1,6 +1,8 @@
 
 
 using Book.DataAcess;
+using Book.DataAcess.Repository;
+using Book.DataAcess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("BookStoreConnection")
     ));
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 //builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
 

@@ -48,7 +48,8 @@ namespace BookStore.Controllers
             {
                 return NotFound();
             }
-            var catgoryfromdb = _db.categories.Find(id);
+             var catgoryfromdb = _db.categories.Find(id);
+            //var catgoryfromdb = _db.categories.FirstOrDefault(u => u.categoryname == "categoryid");
             if(catgoryfromdb == null)
             {
                 return NotFound();

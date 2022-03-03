@@ -16,11 +16,7 @@ namespace Book.DataAcess.Repository
             _db = db;
         }
 
-        public void Save()
-        {
-            _db.SaveChanges();
-            //throw new NotImplementedException();
-        }
+      
 
         public void Update(Category obj)
         {

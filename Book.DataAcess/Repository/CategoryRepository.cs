@@ -16,7 +16,10 @@ namespace Book.DataAcess.Repository
             _db = db;
         }
 
-      
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Update(Category obj)
         {

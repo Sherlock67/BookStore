@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Controllers
+
 {
+
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

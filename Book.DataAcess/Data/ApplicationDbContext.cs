@@ -12,5 +12,7 @@ namespace Book.DataAcess
         }
         public DbSet<Category> categories { get; set; }
 
+        public DbSet<CoverType> CoverTypes { get; set; }
+
     }
 }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Book.DataAcess.Repository.IRepository
 {
-    public interface ICoverTypeRepository : IRepository<CoverType>
+    public interface ICategoryRepository : IRepository<Category>
     {
 
-        void Update(CoverType obj);
+        void Update(Category obj);
         void Save();
        
     }

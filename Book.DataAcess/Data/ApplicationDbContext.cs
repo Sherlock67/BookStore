@@ -14,5 +14,7 @@ namespace Book.DataAcess
 
         public DbSet<CoverType> CoverTypes { get; set; }
 
+        public DbSet<Product> Product { get; set; }
+
     }
 }

@@ -21,6 +21,7 @@ namespace Book.Models
         public double ListPrice { get; set; }
         [Required]
         [Range(1,100000)]
+        public double Price { get; set; }
         public double Price50 { get; set; }
         [Required]
         [Range(1, 100000)]

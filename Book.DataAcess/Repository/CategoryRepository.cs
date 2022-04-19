@@ -26,5 +26,10 @@ namespace Book.DataAcess.Repository
             _db.categories.Update(obj);
             //throw new NotImplementedException();
         }
+
+        public void Update(CoverType obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

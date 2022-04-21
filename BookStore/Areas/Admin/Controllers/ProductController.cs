@@ -19,7 +19,7 @@ namespace BookStore.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
             Product product = new();
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 //create product
                 return View(product);
@@ -28,6 +28,12 @@ namespace BookStore.Areas.Admin.Controllers
             {
                 //update product
             }
+            return View(product);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(Product product)
+        {
             return View(product);
         }
     }

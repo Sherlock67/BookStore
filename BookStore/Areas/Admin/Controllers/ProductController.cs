@@ -9,9 +9,11 @@ namespace BookStore.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _hostEnviroment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnviroment)
         {
             _unitOfWork = unitOfWork;
+            _hostEnviroment = hostEnviroment;
         }
         public IActionResult Index()
         {
@@ -52,11 +54,38 @@ namespace BookStore.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ProductVM obj, IFormFile file)
+        public IActionResult Upsert(ProductVM obj, IFormFile? file)
         {
-            
-            
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _hostEnviroment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"Images\products");
+                    var extension = Path.GetExtension(file.FileName);
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    obj.product.ImageUrl = @"\Images\products\" + fileName + extension;
+
+                }
+                _unitOfWork.Product.Add(obj.product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product Created Successfully";
+                return RedirectToAction("Index");
+            }
             return View(obj);
+           
+          
         }
+       
+           
     }
+            
+            
+            
 }
+
+

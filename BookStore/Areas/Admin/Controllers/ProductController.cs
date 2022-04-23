@@ -1,5 +1,6 @@
 ﻿using Book.DataAcess.Repository.IRepository;
 using Book.Models;
+using Book.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -19,32 +20,36 @@ namespace BookStore.Areas.Admin.Controllers
         }
         public IActionResult Upsert(int? id)
         {
-            Product product = new();
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(
-                u => new SelectListItem
+            ProductVM productVM = new()
+            {
+                product = new(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
                 {
-                    Text = u.categoryname,
-                    Value = u.categoryid.ToString()
-                }
-            );
-            IEnumerable<SelectListItem> CoverTypeList  = _unitOfWork.CoverType.GetAll().Select(
-                u => new SelectListItem
+                    Text = i.categoryname,
+                    Value = i.categoryid.ToString()
+
+                }),
+                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(i=> new SelectListItem
                 {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                }
-            );
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+
+            };
             if (id == null || id == 0)
             {
-                //create product
-                return View(product);
+                //create roduct
+                
+                //ViewBag.CoverTypeList = CoverTypeList;  
+                return View(productVM);
             }
             else
             {
                 //update product
             }
-            return View(product);
+            return View(productVM);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(Product product)

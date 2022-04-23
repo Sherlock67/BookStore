@@ -52,9 +52,11 @@ namespace BookStore.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Product product)
+        public IActionResult Upsert(ProductVM obj, IFormFile file)
         {
-            return View(product);
+            
+            
+            return View(obj);
         }
     }
 }

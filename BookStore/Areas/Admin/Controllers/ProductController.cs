@@ -47,9 +47,11 @@ namespace BookStore.Areas.Admin.Controllers
             }
             else
             {
-                //update product
+                   //update product
+                   productVM.product = _unitOfWork.Product.GetFirstOrDefault(u=>u.ProductId == id);
+                return View(productVM);
             }
-            return View(productVM);
+         
         }
 
         [HttpPost]
@@ -64,6 +66,15 @@ namespace BookStore.Areas.Admin.Controllers
                     string fileName = Guid.NewGuid().ToString();
                     var uploads = Path.Combine(wwwRootPath, @"Images\products");
                     var extension = Path.GetExtension(file.FileName);
+                    if(obj.product.ImageUrl != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath,obj.product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    
+                    }
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
                         file.CopyTo(fileStreams);
@@ -71,7 +82,15 @@ namespace BookStore.Areas.Admin.Controllers
                     obj.product.ImageUrl = @"\Images\products\" + fileName + extension;
 
                 }
-                _unitOfWork.Product.Add(obj.product);
+                if(obj.product.ProductId == 0)
+                {
+                    _unitOfWork.Product.Add(obj.product);
+                }
+                else {
+                    _unitOfWork.Product.Update(obj.product);
+
+                }
+
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
@@ -86,6 +105,25 @@ namespace BookStore.Areas.Admin.Controllers
             //return View(productList);
         }
        
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult DeletePost(int? id)
+        {
+            var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.ProductId == id);
+            if(obj == null)
+            {
+                return Json( new {success= false, message = "Cant find the data"});
+            }
+            var oldImagePath = Path.Combine(_hostEnviroment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.Product.Remove(obj);
+            _unitOfWork.Save();
+            return Json(new {success = true , message = "Delete Succssful"})
+        }
            
     }
             

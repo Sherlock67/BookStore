@@ -17,8 +17,8 @@ namespace BookStore.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll();
-            return View(productList);
+            //IEnumerable<Product> productList = _unitOfWork.Product.GetAll();
+            return View();
         }
         public IActionResult Upsert(int? id)
         {
@@ -77,8 +77,13 @@ namespace BookStore.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View(obj);
-           
-          
+        }
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
+            return Json(new { data = productList });
+            //return View(productList);
         }
        
            
